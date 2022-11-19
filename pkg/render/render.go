@@ -9,6 +9,7 @@ import (
 	"path/filepath"
 
 	"github.com/DaniilShd/WebApp/pkg/config"
+	"github.com/DaniilShd/WebApp/pkg/handlers"
 )
 
 var functions = template.FuncMap{}
@@ -20,7 +21,7 @@ func NewTemplates(a *config.AppConfig) {
 	app = a
 }
 
-func RenderTemplate(w http.ResponseWriter, tmpl string) {
+func RenderTemplate(w http.ResponseWriter, tmpl string, td *handlers.TemplateData) {
 	var tc map[string]*template.Template
 
 	if app.UseCache {
@@ -37,7 +38,7 @@ func RenderTemplate(w http.ResponseWriter, tmpl string) {
 
 	buf := new(bytes.Buffer)
 
-	_ = t.Execute(buf, nil)
+	_ = t.Execute(buf, td)
 
 	_, err := buf.WriteTo(w)
 	if err != nil {
