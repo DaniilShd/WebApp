@@ -4,6 +4,7 @@ import (
 	"net/http"
 
 	"github.com/DaniilShd/WebApp/pkg/config"
+	"github.com/DaniilShd/WebApp/pkg/models"
 	"github.com/DaniilShd/WebApp/pkg/render"
 )
 
@@ -12,18 +13,6 @@ var Repo *Repository
 
 type Repository struct {
 	App *config.AppConfig
-}
-
-// TemplateData holds data sent from handlers to templates
-type TemplateData struct {
-	StringMap map[string]string
-	IntMap    map[string]int
-	FloatMap  map[string]float64
-	Data      map[string]interface{}
-	CSRFToken string
-	Flash     string
-	Warning   string
-	Error     string
 }
 
 func NewRepository(a *config.AppConfig) *Repository {
@@ -37,7 +26,7 @@ func NewHandlers(r *Repository) {
 }
 
 func (m *Repository) Home(w http.ResponseWriter, r *http.Request) {
-	render.RenderTemplate(w, "home.page.html", &TemplateData{})
+	render.RenderTemplate(w, "home.page.html", &models.TemplateData{})
 }
 
 func (m *Repository) About(w http.ResponseWriter, r *http.Request) {
@@ -45,7 +34,7 @@ func (m *Repository) About(w http.ResponseWriter, r *http.Request) {
 	stringMap := make(map[string]string)
 	stringMap["test"] = "Hello Daniil"
 	// send
-	render.RenderTemplate(w, "about.page.html", &TemplateData{
+	render.RenderTemplate(w, "about.page.html", &models.TemplateData{
 		StringMap: stringMap,
 	})
 }

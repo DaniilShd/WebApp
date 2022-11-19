@@ -9,7 +9,7 @@ import (
 	"path/filepath"
 
 	"github.com/DaniilShd/WebApp/pkg/config"
-	"github.com/DaniilShd/WebApp/pkg/handlers"
+	"github.com/DaniilShd/WebApp/pkg/models"
 )
 
 var functions = template.FuncMap{}
@@ -21,7 +21,12 @@ func NewTemplates(a *config.AppConfig) {
 	app = a
 }
 
-func RenderTemplate(w http.ResponseWriter, tmpl string, td *handlers.TemplateData) {
+func AddDefaultData(td *models.TemplateData) *models.TemplateData {
+
+	return td
+}
+
+func RenderTemplate(w http.ResponseWriter, tmpl string, td *models.TemplateData) {
 	var tc map[string]*template.Template
 
 	if app.UseCache {
@@ -37,6 +42,8 @@ func RenderTemplate(w http.ResponseWriter, tmpl string, td *handlers.TemplateDat
 	}
 
 	buf := new(bytes.Buffer)
+
+	td = AddDefaultData(td)
 
 	_ = t.Execute(buf, td)
 
